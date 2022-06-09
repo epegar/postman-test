@@ -1,0 +1,2588 @@
+openapi: 3.0.1
+info:
+  title: Site Management API
+  description: 'The Site Management API enables brX developers to manage channel configurations through a set of endpoints for operations on channels, layouts, component groups, routes, and menus'
+  version: 1.0.0
+externalDocs:
+  description: See official Bloomreach documentation
+  url: 'https://documentation.bloomreach.com/api-reference/content/management/site-management-api/site-management-api.html'
+servers:
+  - url: 'http://localhost:8080/management/site/v1'
+security:
+  - bearerAuth: []
+tags:
+  - name: Channel Operations
+    externalDocs:
+      description: See
+      url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_channel'
+  - name: Channel Component Operations
+    externalDocs:
+      description: See
+      url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_component'
+  - name: Channel Layout Operations
+    externalDocs:
+      description: See
+      url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_layout'
+  - name: Channel Route Operations
+    externalDocs:
+      description: See
+      url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_route'
+  - name: Channel Menu Operations
+    externalDocs:
+      description: See
+      url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_menu'
+paths:
+  '/channels/{channel_id}/component_groups/{group_name}':
+    get:
+      tags:
+        - Channel Component Operations
+      summary: Get a channel component group
+      operationId: getChannelCatalogGroup
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogGroup'
+              example:
+                name: sample-group
+                hidden: false
+                system: false
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Component Operations
+      summary: Create or update a channel component group
+      operationId: putChannelCatalogGroup
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogGroup'
+            example:
+              name: sample-group
+              hidden: false
+              system: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogGroup'
+              example:
+                name: sample-group
+                hidden: false
+                system: false
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogGroup'
+              example:
+                name: sample-group
+                hidden: false
+                system: false
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Component Operations
+      summary: Delete an empty channel component group
+      operationId: deleteChannelCatalogGroup
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/component_groups/{group_name}/components/{component_name}':
+    get:
+      tags:
+        - Channel Component Operations
+      summary: Get a component within a component group
+      operationId: getChannelCatalogGroupComponent
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+        - name: component_name
+          in: path
+          description: Name of component
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: video
+        - name: inherited
+          in: query
+          description: Whether to include inherited types
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentDefinition'
+              example:
+                id: sample-group/video
+                extends: base/component
+                hidden: false
+                system: false
+                xtype: null
+                ctype: Video
+                contentType: 'brxsaas:titleandtext'
+                label: Video
+                icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9Ijc2Ij48cGF0aCBkPSJNMCAwaDI0djI0SDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjEgM0gzYy0xLjExIDAtMiAuODktMiAydjEyYzAgMS4xLjg5IDIgMiAyaDV2Mmg4di0yaDVjMS4xIDAgMS45OS0uOSAxLjk5LTJMMjMgNWMwLTEuMTEtLjktMi0yLTJ6bTAgMTRIM1Y1aDE4djEyem0tNS02bC03IDRWN3oiIGZpbGw9IiMwMDI4NDAiLz48L3N2Zz4='
+                parameters:
+                  - name: url
+                    valueType: string
+                    required: true
+                    hidden: false
+                    overlay: false
+                    defaultValue: ''
+                    displayName: null
+                    system: false
+                    config: null
+                fieldGroups:
+                  - name: param-group-key
+                    displayName: Param group key
+                    parameters:
+                      - url
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Component Operations
+      summary: Create or update a component within a component group
+      operationId: putChannelCatalogGroupComponent
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+        - name: component_name
+          in: path
+          description: Name of component
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: video
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentDefinition'
+            example:
+              id: sample-group/video
+              extends: base/component
+              hidden: false
+              system: false
+              xtype: null
+              ctype: Video
+              contentType: 'brxsaas:titleandtext'
+              label: Video
+              icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9Ijc2Ij48cGF0aCBkPSJNMCAwaDI0djI0SDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjEgM0gzYy0xLjExIDAtMiAuODktMiAydjEyYzAgMS4xLjg5IDIgMiAyaDV2Mmg4di0yaDVjMS4xIDAgMS45OS0uOSAxLjk5LTJMMjMgNWMwLTEuMTEtLjktMi0yLTJ6bTAgMTRIM1Y1aDE4djEyem0tNS02bC03IDRWN3oiIGZpbGw9IiMwMDI4NDAiLz48L3N2Zz4='
+              parameters:
+                - name: url
+                  valueType: string
+                  required: true
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: null
+                  system: false
+                  config: null
+              fieldGroups:
+                - name: param-group-key
+                  displayName: Param group key
+                  parameters:
+                    - url
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentDefinition'
+              example:
+                id: sample-group/video
+                extends: base/component
+                hidden: false
+                system: false
+                xtype: null
+                ctype: Video
+                contentType: 'brxsaas:titleandtext'
+                label: Video
+                icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9Ijc2Ij48cGF0aCBkPSJNMCAwaDI0djI0SDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjEgM0gzYy0xLjExIDAtMiAuODktMiAydjEyYzAgMS4xLjg5IDIgMiAyaDV2Mmg4di0yaDVjMS4xIDAgMS45OS0uOSAxLjk5LTJMMjMgNWMwLTEuMTEtLjktMi0yLTJ6bTAgMTRIM1Y1aDE4djEyem0tNS02bC03IDRWN3oiIGZpbGw9IiMwMDI4NDAiLz48L3N2Zz4='
+                parameters:
+                  - name: url
+                    valueType: string
+                    required: true
+                    hidden: false
+                    overlay: false
+                    defaultValue: ''
+                    displayName: null
+                    system: false
+                    config: null
+                fieldGroups:
+                  - name: param-group-key
+                    displayName: Param group key
+                    parameters:
+                      - url
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentDefinition'
+              example:
+                id: sample-group/video
+                extends: base/component
+                hidden: false
+                system: false
+                xtype: null
+                ctype: Video
+                contentType: 'brxsaas:titleandtext'
+                label: Video
+                icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9Ijc2Ij48cGF0aCBkPSJNMCAwaDI0djI0SDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjEgM0gzYy0xLjExIDAtMiAuODktMiAydjEyYzAgMS4xLjg5IDIgMiAyaDV2Mmg4di0yaDVjMS4xIDAgMS45OS0uOSAxLjk5LTJMMjMgNWMwLTEuMTEtLjktMi0yLTJ6bTAgMTRIM1Y1aDE4djEyem0tNS02bC03IDRWN3oiIGZpbGw9IiMwMDI4NDAiLz48L3N2Zz4='
+                parameters:
+                  - name: url
+                    valueType: string
+                    required: true
+                    hidden: false
+                    overlay: false
+                    defaultValue: ''
+                    displayName: null
+                    system: false
+                    config: null
+                fieldGroups:
+                  - name: param-group-key
+                    displayName: Param group key
+                    parameters:
+                      - url
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Component Operations
+      summary: Delete an unreferenced component from a component group
+      operationId: deleteChannelCatalogGroupComponent
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+        - name: component_name
+          in: path
+          description: Name of component
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: video
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/component_groups/{group_name}/components':
+    get:
+      tags:
+        - Channel Component Operations
+      summary: Get all components for a component group
+      operationId: getChannelCatalogGroupComponents
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: group_name
+          in: path
+          description: Name of group
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: sample-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComponentDefinition'
+              example:
+                - id: sample-group/video
+                  extends: base/component
+                  hidden: false
+                  system: false
+                  xtype: null
+                  ctype: Video
+                  contentType: 'brxsaas:titleandtext'
+                  label: Video
+                  icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9Ijc2Ij48cGF0aCBkPSJNMCAwaDI0djI0SDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjEgM0gzYy0xLjExIDAtMiAuODktMiAydjEyYzAgMS4xLjg5IDIgMiAyaDV2Mmg4di0yaDVjMS4xIDAgMS45OS0uOSAxLjk5LTJMMjMgNWMwLTEuMTEtLjktMi0yLTJ6bTAgMTRIM1Y1aDE4djEyem0tNS02bC03IDRWN3oiIGZpbGw9IiMwMDI4NDAiLz48L3N2Zz4='
+                  parameters:
+                    - name: url
+                      valueType: string
+                      required: true
+                      hidden: false
+                      overlay: false
+                      defaultValue: ''
+                      displayName: null
+                      system: false
+                      config: null
+                  fieldGroups:
+                    - name: param-group-key
+                      displayName: Param group key
+                      parameters:
+                        - url
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/channels/{channel_id}/component_groups':
+    get:
+      tags:
+        - Channel Component Operations
+      summary: Get all component groups for a channel
+      operationId: getChannelCatalogGroups
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogGroup'
+              example:
+                - name: sample-group
+                  hidden: false
+                  system: false
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/channels/{channel_id}/parameters/{parameter_name}':
+    get:
+      tags:
+        - Channel Operations
+      summary: Get meta-data for a channel parameter
+      operationId: getChannelParameterInfo
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: parameter_name
+          in: path
+          description: Name of the parameter
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: smAccountId
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParameterType'
+              example:
+                name: smAccountId
+                valueType: string
+                required: true
+                hidden: false
+                overlay: false
+                defaultValue: ''
+                displayName: brSM Account ID
+                system: false
+                config: null
+        '403':
+          description: Forbidden
+    put:
+      tags:
+        - Channel Operations
+      summary: Add or update meta-data for a channel parameter
+      description: 'Add or update the meta-data for a specific channel parameter. Note updating or setting a parameter <b>value</b> is done via  PUT /channels/{channel_id}'
+      operationId: putChannelParameterInfo
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: parameter_name
+          in: path
+          description: Name of the parameter
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: smAccountId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParameterType'
+            example:
+              name: smAccountId
+              valueType: string
+              required: true
+              hidden: false
+              overlay: false
+              defaultValue: ''
+              displayName: brSM Account ID
+              system: false
+              config: null
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Must be used in any subsequent update requests of this entity
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParameterType'
+              example:
+                name: smAccountId
+                valueType: string
+                required: true
+                hidden: false
+                overlay: false
+                defaultValue: ''
+                displayName: brSM Account ID
+                system: false
+                config: null
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParameterType'
+              example:
+                name: smAccountId
+                valueType: string
+                required: true
+                hidden: false
+                overlay: false
+                defaultValue: ''
+                displayName: brSM Account ID
+                system: false
+                config: null
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Operations
+      summary: Delete channel parameter meta-data
+      description: 'Delete the meta-data info for a custom channel parameter, or (only) reset a builtin channel parameter'
+      operationId: deleteChannelParameterInfo
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: parameter_name
+          in: path
+          description: Name of the parameter
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: smAccountId
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/fieldgroups/{fieldgroup_name}':
+    get:
+      tags:
+        - Channel Operations
+      summary: Get meta-data for a field group
+      operationId: getFieldGroup
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: fieldgroup_name
+          in: path
+          description: Name of the fieldgroup
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: group-key
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                name: group-key
+                displayName: Group key
+                parameters:
+                  - smAccountId
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Operations
+      summary: Add or update meta-data for a field group
+      operationId: putFieldGroup
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: fieldgroup_name
+          in: path
+          description: Name of the fieldgroup
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: group-key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldGroup'
+            example:
+              name: group-key
+              displayName: Group key
+              parameters:
+                - smAccountId
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                name: group-key
+                displayName: Group key
+                parameters:
+                  - smAccountId
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                name: group-key
+                displayName: Group key
+                parameters:
+                  - smAccountId
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Operations
+      summary: Delete a field group
+      operationId: deleteFieldGroup
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: fieldgroup_name
+          in: path
+          description: Name of the fieldgroup
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: group-key
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}':
+    get:
+      tags:
+        - Channel Operations
+      summary: Get a channel
+      description: Get a channel developer branch by id
+      operationId: getChannel
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+              example:
+                id: brxsaas-vIUy9
+                name: BrX SaaS
+                branch: vIUy9
+                branchOf: brxsaas
+                contentRootPath: /content/documents/brxsaas
+                locale: null
+                devices: []
+                defaultDevice: null
+                responseHeaders: null
+                linkurlPrefix: null
+                cdnHost: null
+                parameters:
+                  graphql_baseurl: '${public.brx.graphql.baseurl}'
+                  smDomainKey: ''
+                  smAccountId: '${public.brx.smAccountId}'
+                  smEndpoint: '${public.brx.smEndpoint}'
+                  spaUrl: 'https://brxm-react-spa.herokuapp.com/'
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Operations
+      summary: Update an existing channel
+      description: Update an existing channel developer branch
+      operationId: updateChannel
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+            example:
+              id: brxsaas-vIUy9
+              name: BrX SaaS
+              branch: vIUy9
+              branchOf: brxsaas
+              contentRootPath: /content/documents/brxsaas
+              locale: null
+              devices: []
+              defaultDevice: null
+              responseHeaders: null
+              linkurlPrefix: null
+              cdnHost: null
+              parameters:
+                graphql_baseurl: '${public.brx.graphql.baseurl}'
+                smDomainKey: ''
+                smAccountId: '${public.brx.smAccountId}'
+                smEndpoint: '${public.brx.smEndpoint}'
+                spaUrl: 'https://brxm-react-spa.herokuapp.com/'
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+              example:
+                id: brxsaas-vIUy9
+                name: BrX SaaS
+                branch: vIUy9
+                branchOf: brxsaas
+                contentRootPath: /content/documents/brxsaas
+                locale: null
+                devices: []
+                defaultDevice: null
+                responseHeaders: null
+                linkurlPrefix: null
+                cdnHost: null
+                parameters:
+                  graphql_baseurl: '${public.brx.graphql.baseurl}'
+                  smDomainKey: ''
+                  smAccountId: '${public.brx.smAccountId}'
+                  smEndpoint: '${public.brx.smEndpoint}'
+                  spaUrl: 'https://brxm-react-spa.herokuapp.com/'
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/parameters':
+    get:
+      tags:
+        - Channel Operations
+      summary: Get meta-data for all channel parameters
+      operationId: getChannelParametersInfo
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParameterType'
+              example:
+                - name: smAccountId
+                  valueType: string
+                  required: true
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: brSM Account ID
+                  system: false
+                  config: null
+                - name: smDomainKey
+                  valueType: string
+                  required: false
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: brSM Domain Key
+                  system: false
+                  config: null
+                - name: smEndpoint
+                  valueType: string
+                  required: false
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: brSM API Endpoint
+                  system: false
+                  config: null
+                - name: spaUrl
+                  valueType: string
+                  required: true
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: spaUrl
+                  system: false
+                  config: null
+                - name: graphql_baseurl
+                  valueType: string
+                  required: false
+                  hidden: false
+                  overlay: false
+                  defaultValue: ''
+                  displayName: GraphQL Base URL
+                  system: false
+                  config: null
+        '403':
+          description: Forbidden
+  /channels:
+    get:
+      tags:
+        - Channel Operations
+      summary: Get all channels
+      description: 'Get all the channel developer branches in the brXM instance. <br/> If the returned list is empty, it means that there are no developer projects linked to any channel. It may be necessary to create a developer project or to link an existing developer project to a channel '
+      operationId: getChannels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Channel'
+              example:
+                - id: brxsaas-vIUy9
+                  name: BrX SaaS
+                  branch: vIUy9
+                  branchOf: brxsaas
+                  contentRootPath: /content/documents/brxsaas
+                  locale: null
+                  devices: []
+                  defaultDevice: null
+                  responseHeaders: null
+                  linkurlPrefix: null
+                  cdnHost: null
+                  parameters:
+                    graphql_baseurl: '${public.brx.graphql.baseurl}'
+                    smDomainKey: ''
+                    smAccountId: '${public.brx.smAccountId}'
+                    smEndpoint: '${public.brx.smEndpoint}'
+                    spaUrl: 'https://brxm-react-spa.herokuapp.com/'
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/fieldgroups':
+    get:
+      tags:
+        - Channel Operations
+      summary: Get meta-data for all field groups
+      operationId: getFieldGroups
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FieldGroup'
+              example:
+                - name: group-key
+                  displayName: Group key
+                  parameters:
+                    - smAccountId
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/layouts/{layout_name}':
+    get:
+      tags:
+        - Channel Layout Operations
+      summary: Get a channel layout
+      operationId: getChannelPage
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: layout_name
+          in: path
+          description: Name of layout
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: content
+        - name: resolved
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Layout'
+              example:
+                name: content
+                label: null
+                description: null
+                parameters: {}
+                type: page
+                extends: base
+                components:
+                  - name: main
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+                  - name: right
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Layout Operations
+      summary: Create or update a channel layout
+      operationId: putChannelPage
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: layout_name
+          in: path
+          description: Name of layout
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Layout'
+            example:
+              name: content
+              label: null
+              description: null
+              parameters: {}
+              type: page
+              extends: base
+              components:
+                - name: main
+                  label: null
+                  description: null
+                  parameters: {}
+                  xtype: null
+                  definition: null
+                  components:
+                    - name: container
+                      label: null
+                      description: null
+                      parameters: {}
+                      xtype: hst.nomarkup
+                      type: managed
+                  type: static
+                - name: right
+                  label: null
+                  description: null
+                  parameters: {}
+                  xtype: null
+                  definition: null
+                  components:
+                    - name: container
+                      label: null
+                      description: null
+                      parameters: {}
+                      xtype: hst.nomarkup
+                      type: managed
+                  type: static
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Layout'
+              example:
+                name: content
+                label: null
+                description: null
+                parameters: {}
+                type: page
+                extends: base
+                components:
+                  - name: main
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+                  - name: right
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Layout'
+              example:
+                name: content
+                label: null
+                description: null
+                parameters: {}
+                type: page
+                extends: base
+                components:
+                  - name: main
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+                  - name: right
+                    label: null
+                    description: null
+                    parameters: {}
+                    xtype: null
+                    definition: null
+                    components:
+                      - name: container
+                        label: null
+                        description: null
+                        parameters: {}
+                        xtype: hst.nomarkup
+                        type: managed
+                    type: static
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Layout Operations
+      summary: Delete a channel layout
+      operationId: deleteChannelPage
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: layout_name
+          in: path
+          description: Name of layout
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: content
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/layouts':
+    get:
+      tags:
+        - Channel Layout Operations
+      summary: Get the channel layouts
+      operationId: getChannelPages
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Layout'
+              example:
+                - name: content
+                  label: null
+                  description: null
+                  parameters: {}
+                  type: page
+                  extends: base
+                  components:
+                    - name: main
+                      label: null
+                      description: null
+                      parameters: {}
+                      xtype: null
+                      definition: null
+                      components:
+                        - name: container
+                          label: null
+                          description: null
+                          parameters: {}
+                          xtype: hst.nomarkup
+                          type: managed
+                      type: static
+                    - name: right
+                      label: null
+                      description: null
+                      parameters: {}
+                      xtype: null
+                      definition: null
+                      components:
+                        - name: container
+                          label: null
+                          description: null
+                          parameters: {}
+                          xtype: hst.nomarkup
+                          type: managed
+                      type: static
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/routes/{route_name}':
+    get:
+      tags:
+        - Channel Route Operations
+      summary: Get a route
+      operationId: getChannelSitemapItem
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: route_name
+          in: path
+          description: Name of route
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: products
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+              example:
+                name: products
+                layout: null
+                pageTitle: null
+                relativeContentPath: null
+                referenceId: null
+                parameters: {}
+                doctypePages: {}
+                items:
+                  - name: _any_
+                    layout: product
+                    pageTitle: null
+                    relativeContentPath: 'pages/products/${1}'
+                    documentRequired: false
+                    referenceId: null
+                    parameters: {}
+                    doctypePages: {}
+                    items: []
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Route Operations
+      summary: Create or update a route
+      operationId: putChannelSitemapItem
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: route_name
+          in: path
+          description: Name of route
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+            example:
+              name: products
+              layout: null
+              pageTitle: null
+              relativeContentPath: null
+              referenceId: null
+              parameters: {}
+              doctypePages: {}
+              items:
+                - name: _any_
+                  layout: product
+                  pageTitle: null
+                  relativeContentPath: 'pages/products/${1}'
+                  documentRequired: false
+                  referenceId: null
+                  parameters: {}
+                  doctypePages: {}
+                  items: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+              example:
+                name: products
+                layout: null
+                pageTitle: null
+                relativeContentPath: null
+                referenceId: null
+                parameters: {}
+                doctypePages: {}
+                items:
+                  - name: _any_
+                    layout: product
+                    pageTitle: null
+                    relativeContentPath: 'pages/products/${1}'
+                    documentRequired: false
+                    referenceId: null
+                    parameters: {}
+                    doctypePages: {}
+                    items: []
+        '201':
+          description: Created
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+              example:
+                name: products
+                layout: null
+                pageTitle: null
+                relativeContentPath: null
+                referenceId: null
+                parameters: {}
+                doctypePages: {}
+                items:
+                  - name: _any_
+                    layout: product
+                    pageTitle: null
+                    relativeContentPath: 'pages/products/${1}'
+                    documentRequired: false
+                    referenceId: null
+                    parameters: {}
+                    doctypePages: {}
+                    items: []
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Route Operations
+      summary: Delete a route
+      operationId: deleteChannelSitemapItem
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: route_name
+          in: path
+          description: Name of route
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: products
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/routes':
+    get:
+      tags:
+        - Channel Route Operations
+      summary: Get the channel routes
+      operationId: getChannelSitemap
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+              example:
+                - name: products
+                  layout: null
+                  pageTitle: null
+                  relativeContentPath: null
+                  referenceId: null
+                  parameters: {}
+                  doctypePages: {}
+                  items:
+                    - name: _any_
+                      layout: product
+                      pageTitle: null
+                      relativeContentPath: 'pages/products/${1}'
+                      documentRequired: false
+                      referenceId: null
+                      parameters: {}
+                      doctypePages: {}
+                      items: []
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/menus/{menu_name}':
+    get:
+      tags:
+        - Channel Menu Operations
+      summary: Get a channel menu (name)
+      operationId: getChannelSitemenu
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: main
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+              example: main
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Menu Operations
+      summary: Create a channel menu (name)
+      operationId: putChannelSitemenu
+      parameters:
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: main
+      responses:
+        '201':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+              example: main
+        '403':
+          description: Forbidden
+    delete:
+      tags:
+        - Channel Menu Operations
+      summary: Delete a channel menu
+      operationId: deleteChannelSitemenu
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: main
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/menus/{menu_name}/items':
+    get:
+      tags:
+        - Channel Menu Operations
+      summary: Get channel menu items
+      operationId: getChannelSitemenuItems
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          schema:
+            type: string
+          example: main
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SitemenuItem'
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      description: UNDER DEVELOPMENT. This endpoint is not yet available to be used. You can check the design of specification and provide early feedabck to the product team.
+    put:
+      tags:
+        - Channel Menu Operations
+      summary: Update channel menu items
+      operationId: putChannelSitemenuItems
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          schema:
+            type: string
+          example: main
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SitemenuItem'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SitemenuItem'
+      description: UNDER DEVELOPMENT. This endpoint is not yet available to be used. You can check the design of specification and provide early feedabck to the product team.
+  '/channels/{channel_id}/menus/{menu_name}/properties':
+    get:
+      tags:
+        - Channel Menu Operations
+      summary: Get channel menu template properties
+      operationId: getChannelSitemenuProperties
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: main
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+              example: '{"property1":"propValue1","property2":"propValue2"}'
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Channel Menu Operations
+      summary: Create or update channel menu template properties
+      operationId: putChannelSitemenuProperties
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+        - name: menu_name
+          in: path
+          description: Name of menu
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: main
+        - name: X-Resource-Version
+          in: header
+          description: Resource's version. Must be used in any subsequent update requests of this resource. Can be obtained when GETting the resource
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 433cc90445d29c2356e385b9efe548b19ed86739f27eb7958a81847b9d8517c2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+            example: '{"property1":"propValue1","property2":"propValue2"}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Resource-Version:
+              description: Resource's version. Must be used in any subsequent update requests of this resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+              example: '{"property1":"propValue1","property2":"propValue2"}'
+        '403':
+          description: Forbidden
+  '/channels/{channel_id}/menus':
+    get:
+      tags:
+        - Channel Menu Operations
+      summary: Get all channel menu (names)
+      operationId: getChannelSitemenus
+      parameters:
+        - name: channel_id
+          in: path
+          description: 'Channel id. Optionally includes the project id, separated by a dash: mychannel-branchId'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: brxsaas-vIUy9
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - main
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+components:
+  schemas:
+    CatalogGroup:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: identifying name of a catalog group for its channel; "base" is a reserved and predefined (system) group name
+        hidden:
+          type: boolean
+          description: 'indicator if this catalog group (and its resources, e.g. components) will be available in the ChannelManager UI'
+          default: false
+        system:
+          type: boolean
+          description: 'indicator if this catalog group (and its resources, e.g. components) are protected; if true implies hidden is true'
+          default: false
+      externalDocs:
+        description: See
+        url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_component-group'
+    ComponentDefinition:
+      required:
+        - extends
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'identifier of this component definition: {group}/{name}'
+        extends:
+          type: string
+          description: '{group}/{name} id of the component definition this definition extends from'
+        hidden:
+          type: boolean
+          description: indicator if this component definition is configurable in the ChannelManager UI
+        system:
+          type: boolean
+          description: 'indicator if this a protected (system) component definition; if true, implies hidden is true'
+        xtype:
+          type: string
+          description: frontend layout type
+        ctype:
+          type: string
+          description: frontend component type
+        contentType:
+          type: string
+          description: 'contentType for cases where the component should also create content: when putting, the contentType must be an existing document compound type, otherwise the request is not executed. The value for the contentType may optionally include the namespace prefix; this is only required in case the type is in a namespace other than ''brxsaas'', eg mynamespace:titleandtext'
+        label:
+          type: string
+          description: default display name of this component definition in the ChannelManager UI
+        icon:
+          type: string
+          description: base64 representation of the icon for this component definition in the ChannelManager UI
+        parameters:
+          type: array
+          description: custom (residual) or customized (overlaying) parameters for this component definition
+          items:
+            $ref: '#/components/schemas/ParameterType'
+        fieldGroups:
+          type: array
+          description: field groups
+          items:
+            $ref: '#/components/schemas/FieldGroup'
+      externalDocs:
+        description: See
+        url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_component'
+    FieldGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Field Group Name
+        displayName:
+          type: string
+          description: Field Group Display Name
+        parameters:
+          type: array
+          description: Field Group Parameters
+          items:
+            type: string
+            description: Field Group Parameters
+    KeyLabel:
+      required:
+        - key
+        - label
+      type: object
+      properties:
+        key:
+          type: string
+          description: key validation of the field. Expects a string value
+        label:
+          type: string
+          description: label validation of the field. Expects a string value
+      description: Expects an array of key-label values.
+    ParameterConfigType:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: the type of this config field
+          readOnly: true
+          enum:
+            - contentpath
+            - dropdown
+            - imagesetpath
+      description: Field Config
+      discriminator:
+        propertyName: type
+        mapping:
+          contentpath: '#/components/schemas/ParameterContentPathType'
+          dropdown: '#/components/schemas/ParameterDropdownType'
+          imagesetpath: '#/components/schemas/ParameterImageSetPathType'
+      oneOf:
+        - $ref: '#/components/schemas/ParameterContentPathType'
+        - $ref: '#/components/schemas/ParameterDropdownType'
+        - $ref: '#/components/schemas/ParameterImageSetPathType'
+    ParameterContentPathType:
+      required:
+        - type
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ParameterConfigType'
+        - type: object
+          properties:
+            pickerConfiguration:
+              type: string
+            pickerInitialPath:
+              type: string
+            pickerRememberLastVisited:
+              type: boolean
+            pickerSelectableNodeTypes:
+              type: array
+              items:
+                type: string
+            relative:
+              type: boolean
+            pickerRootPath:
+              type: string
+    ParameterDropdownType:
+      required:
+        - sourceId
+        - type
+        - value
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ParameterConfigType'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: string
+            structuredValues:
+              type: array
+              description: Expects an array of key-label values.
+              items:
+                $ref: '#/components/schemas/KeyLabel'
+            valueListProvider:
+              type: string
+            sourceId:
+              type: string
+    ParameterImageSetPathType:
+      required:
+        - type
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ParameterConfigType'
+        - type: object
+          properties:
+            pickerConfiguration:
+              type: string
+            pickerInitialPath:
+              type: string
+            pickerRememberLastVisited:
+              type: boolean
+            pickerSelectableNodeTypes:
+              type: array
+              items:
+                type: string
+            previewVariant:
+              type: string
+    ParameterType:
+      required:
+        - name
+        - valueType
+      type: object
+      properties:
+        name:
+          type: string
+        valueType:
+          type: string
+          enum:
+            - string
+            - calendar
+            - boolean
+            - integer
+            - number
+        required:
+          type: boolean
+        hidden:
+          type: boolean
+        overlay:
+          type: boolean
+        defaultValue:
+          type: object
+        displayName:
+          type: string
+        system:
+          type: boolean
+          description: System readonly parameter
+        config:
+          $ref: '#/components/schemas/ParameterConfigType'
+    Channel:
+      required:
+        - contentRootPath
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: identifier for a specific channel branch; constructed as "<channel name>-<channel branch>"
+        name:
+          type: string
+          description: identifying name of a channel
+        branch:
+          type: string
+          description: name of the channel branch
+        branchOf:
+          type: string
+          description: 'name of channel branch this branch is branched from (if branched), currently always ''master'''
+        contentRootPath:
+          type: string
+          description: the (repository) content path (as child of /content) to be used as base content path for this channel; cannot be (only) /
+        locale:
+          type: string
+          description: (content) locale to be used and assumed for this channel
+        devices:
+          type: array
+          description: names and width of supported delivery tier 'devices' to choose from for the Channel Manager (preview) rendering
+          items:
+            type: string
+            description: names and width of supported delivery tier 'devices' to choose from for the Channel Manager (preview) rendering
+        defaultDevice:
+          type: string
+          description: 'name of the default ''device'' to use by default for the Channel Manager (preview) rendering, defaults to "default" if not configured'
+        responseHeaders:
+          type: object
+          additionalProperties:
+            type: string
+            description: optional response headers to provide on a (PMA) response
+          description: optional response headers to provide on a (PMA) response
+        linkurlPrefix:
+          type: string
+          description: The prefix to prepend to links when the Channel PMA is accessed through a reverse proxy
+        cdnHost:
+          type: string
+          description: The CDN to use (where applicable and possible)
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+            description: a map of parameters (names/values) for this Channel
+          description: a map of parameters (names/values) for this Channel
+      externalDocs:
+        description: See
+        url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_channel'
+    AbstractComponent:
+      required:
+        - name
+        - type
+      type: object
+      properties:
+        name:
+          type: string
+          description: identifying name of this component within its page
+          readOnly: true
+        label:
+          type: string
+          description: default display label for this component
+        description:
+          type: string
+          description: description for this component
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+            description: a map of string parameters (names/values) for this component
+          description: a map of string parameters (names/values) for this component
+        xtype:
+          type: string
+          description: the layout used for rendering inner containers
+          enum:
+            - hst.vbox
+            - hst.unorderedlist
+            - hst.orderedlist
+            - hst.span
+            - hst.nomarkup
+        type:
+          type: string
+          description: the type of this component
+          readOnly: true
+          enum:
+            - static
+            - managed
+      description: the components that are defined in the current layout
+      discriminator:
+        propertyName: type
+        mapping:
+          managed: '#/components/schemas/ManagedComponent'
+          static: '#/components/schemas/StaticComponent'
+    Layout:
+      required:
+        - name
+        - type
+      type: object
+      properties:
+        name:
+          type: string
+          description: identifying name of this layout within its channel
+          readOnly: true
+        label:
+          type: string
+          description: default display label for this layout
+        description:
+          type: string
+          description: description for this layout
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+            description: a map of string parameters (names/values) for this layout
+          description: a map of string parameters (names/values) for this layout
+        type:
+          type: string
+          description: 'page type defines the usage. Only abstract pages can be extended. Valid values: abstract, page, xpage'
+          readOnly: true
+          enum:
+            - abstract
+            - page
+            - xpage
+        extends:
+          type: string
+          description: the name of the (abstract) page extended by this layout
+        components:
+          type: array
+          description: the components that are defined in the current layout
+          items:
+            $ref: '#/components/schemas/AbstractComponent'
+      externalDocs:
+        description: See
+        url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_layout'
+    ManagedComponent:
+      required:
+        - name
+        - type
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractComponent'
+    StaticComponent:
+      required:
+        - name
+        - type
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractComponent'
+        - type: object
+          properties:
+            definition:
+              type: string
+              description: the catalog component definition this component is based on
+            components:
+              type: array
+              description: the components that are defined in the current page
+              items:
+                $ref: '#/components/schemas/AbstractComponent'
+    Route:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: the name (url path element) of the sitemap item. Each sitemap item name must be unique between its siblings.
+        layout:
+          type: string
+          description: the name of the (default) layout definition for rendering a url matching this sitemap item
+        pageTitle:
+          type: string
+          description: default page (header) title
+        relativeContentPath:
+          type: string
+          description: 'the (base) content path, relative to the channel (base) content path to use for rendering this sitemap item page, or any of its children'
+        referenceId:
+          type: string
+          description: the (unique) reference id value can be used instead of the content path to create a direct link to this sitemap item
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+            description: a map of string parameters (names/values) for rendering this sitemap item page
+          description: a map of string parameters (names/values) for rendering this sitemap item page
+        documentRequired:
+          type: boolean
+          description: 'boolean value if the URL should have a (primary) document or folder item. Default false when missing. If the value is true and the URL does not map to a specific content item, the PageModelApi returns a 404 page.'
+        doctypePages:
+          type: object
+          additionalProperties:
+            type: string
+            description: a more specialized page (name) mapping based on the matched document its type
+          description: a more specialized page (name) mapping based on the matched document its type
+        items:
+          type: array
+          description: a list of child sitemap items.
+          items:
+            $ref: '#/components/schemas/Route'
+      externalDocs:
+        description: See
+        url: 'https://documentation.bloomreach.com/developers/concepts/channels-and-pages-concepts.html#scroll_route'
+    SitemenuItem:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: a name of site menu item
+        link:
+          type: string
+          description: site menu item link
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            description: site menu item properties
+          description: site menu item properties
+        items:
+          type: array
+          description: nested site menu items
+          items:
+            $ref: '#/components/schemas/SitemenuItem'
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      name: x-auth-token
+      in: header
